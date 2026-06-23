@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * tarefa service
+ * encomenda service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::tarefa.tarefa');
+module.exports = createCoreService('api::encomenda.encomenda');

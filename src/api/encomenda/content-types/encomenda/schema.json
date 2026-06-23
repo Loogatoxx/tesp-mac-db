@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "encomendas",
+  "info": {
+    "singularName": "encomenda",
+    "pluralName": "encomendas",
+    "displayName": "Encomenda",
+    "description": "Encomendas e carrinho de compras dos utilizadores"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "utilizador": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "encomendas"
+    },
+    "produtos": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::produto.produto",
+      "inversedBy": "encomendas"
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": [
+        "Carrinho",
+        "Pendente",
+        "Pago",
+        "Enviado",
+        "Entregue",
+        "Cancelado"
+      ],
+      "default": "Carrinho",
+      "required": true
+    },
+    "total": {
+      "type": "decimal",
+      "default": 0,
+      "min": 0
+    },
+    "enderecoEntrega": {
+      "type": "text"
+    }
+  }
+}

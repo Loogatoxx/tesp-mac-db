@@ -430,58 +430,111 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiItemItem extends Struct.CollectionTypeSchema {
-  collectionName: 'items';
+export interface ApiEncomendaEncomenda extends Struct.CollectionTypeSchema {
+  collectionName: 'encomendas';
   info: {
-    displayName: 'Item';
-    pluralName: 'items';
-    singularName: 'item';
+    description: 'Encomendas e carrinho de compras dos utilizadores';
+    displayName: 'Encomenda';
+    pluralName: 'encomendas';
+    singularName: 'encomenda';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Descricao: Schema.Attribute.String;
-    Disponivel: Schema.Attribute.Boolean;
-    Foto: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::item.item'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    Tipo: Schema.Attribute.Enumeration<['Hamburguer', 'Frito', 'Bebida']>;
-    Titulo: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTarefaTarefa extends Struct.CollectionTypeSchema {
-  collectionName: 'tarefas';
-  info: {
-    displayName: 'Tarefa';
-    pluralName: 'tarefas';
-    singularName: 'tarefa';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Concluida: Schema.Attribute.Boolean;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    DescricaoTarefa: Schema.Attribute.String;
+    enderecoEntrega: Schema.Attribute.Text;
+    estado: Schema.Attribute.Enumeration<
+      ['Carrinho', 'Pendente', 'Pago', 'Enviado', 'Entregue', 'Cancelado']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Carrinho'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::tarefa.tarefa'
+      'api::encomenda.encomenda'
     > &
       Schema.Attribute.Private;
+    produtos: Schema.Attribute.Relation<'manyToMany', 'api::produto.produto'>;
     publishedAt: Schema.Attribute.DateTime;
+    total: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    utilizador: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiProdutoProduto extends Struct.CollectionTypeSchema {
+  collectionName: 'produtos';
+  info: {
+    description: 'Produtos a venda na loja';
+    displayName: 'produto';
+    pluralName: 'produtos';
+    singularName: 'produto';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Categoria: Schema.Attribute.Enumeration<
+      ['Anfibio', 'Reptil', 'Peixe', 'Aracnideo', 'Mamifero', 'Ave', 'Outro']
+    > &
+      Schema.Attribute.DefaultTo<'Outro'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Descricao: Schema.Attribute.Text;
+    Destaque: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    Detalhes: Schema.Attribute.RichText;
+    Disponivel: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    encomendas: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::encomenda.encomenda'
+    >;
+    Foto: Schema.Attribute.Media<'images'>;
+    Galeria: Schema.Attribute.Media<'images', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::produto.produto'
+    > &
+      Schema.Attribute.Private;
+    Nome: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    Preco: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    publishedAt: Schema.Attribute.DateTime;
+    Slug: Schema.Attribute.UID<'Nome'>;
+    Stock: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -944,7 +997,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -958,6 +1010,10 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    encomendas: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::encomenda.encomenda'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -999,8 +1055,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::item.item': ApiItemItem;
-      'api::tarefa.tarefa': ApiTarefaTarefa;
+      'api::encomenda.encomenda': ApiEncomendaEncomenda;
+      'api::produto.produto': ApiProdutoProduto;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

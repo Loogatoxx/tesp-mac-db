@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "produtos",
+  "info": {
+    "singularName": "produto",
+    "pluralName": "produtos",
+    "displayName": "produto",
+    "description": "Produtos a venda na loja"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nome": {
+      "type": "string",
+      "required": true,
+      "maxLength": 120
+    },
+    "Slug": {
+      "type": "uid",
+      "targetField": "Nome"
+    },
+    "Descricao": {
+      "type": "text"
+    },
+    "Detalhes": {
+      "type": "richtext"
+    },
+    "Preco": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "Foto": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Galeria": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Stock": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "Disponivel": {
+      "type": "boolean",
+      "default": true
+    },
+    "Categoria": {
+      "type": "enumeration",
+      "enum": [
+        "Anfibio",
+        "Reptil",
+        "Peixe",
+        "Aracnideo",
+        "Mamifero",
+        "Ave",
+        "Outro"
+      ],
+      "default": "Outro"
+    },
+    "Destaque": {
+      "type": "boolean",
+      "default": false
+    },
+    "encomendas": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::encomenda.encomenda",
+      "mappedBy": "produtos"
+    }
+  }
+}
