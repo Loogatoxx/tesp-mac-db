@@ -8,7 +8,7 @@
     "description": "Produtos a venda na loja"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

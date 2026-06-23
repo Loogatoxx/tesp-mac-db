@@ -486,7 +486,7 @@ export interface ApiProdutoProduto extends Struct.CollectionTypeSchema {
     singularName: 'produto';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     Categoria: Schema.Attribute.Enumeration<
