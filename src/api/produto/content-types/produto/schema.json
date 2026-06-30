@@ -14,8 +14,8 @@
   "attributes": {
     "Nome": {
       "type": "string",
-      "required": true,
-      "maxLength": 120
+      "maxLength": 120,
+      "required": true
     },
     "Slug": {
       "type": "uid",
@@ -57,6 +57,7 @@
     },
     "Categoria": {
       "type": "enumeration",
+      "default": "Outro",
       "enum": [
         "Anfibio",
         "Reptil",
@@ -64,9 +65,9 @@
         "Aracnideo",
         "Mamifero",
         "Ave",
+        "Inseto",
         "Outro"
-      ],
-      "default": "Outro"
+      ]
     },
     "Destaque": {
       "type": "boolean",

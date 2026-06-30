@@ -490,7 +490,16 @@ export interface ApiProdutoProduto extends Struct.CollectionTypeSchema {
   };
   attributes: {
     Categoria: Schema.Attribute.Enumeration<
-      ['Anfibio', 'Reptil', 'Peixe', 'Aracnideo', 'Mamifero', 'Ave', 'Outro']
+      [
+        'Anfibio',
+        'Reptil',
+        'Peixe',
+        'Aracnideo',
+        'Mamifero',
+        'Ave',
+        'Inseto',
+        'Outro',
+      ]
     > &
       Schema.Attribute.DefaultTo<'Outro'>;
     createdAt: Schema.Attribute.DateTime;
