@@ -44,6 +44,15 @@
     },
     "enderecoEntrega": {
       "type": "text"
+    },
+    "nomeCliente": {
+      "type": "string"
+    },
+    "telefone": {
+      "type": "string"
+    },
+    "itens": {
+      "type": "json"
     }
   }
 }

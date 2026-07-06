@@ -451,14 +451,17 @@ export interface ApiEncomendaEncomenda extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Carrinho'>;
+    itens: Schema.Attribute.JSON;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::encomenda.encomenda'
     > &
       Schema.Attribute.Private;
+    nomeCliente: Schema.Attribute.String;
     produtos: Schema.Attribute.Relation<'manyToMany', 'api::produto.produto'>;
     publishedAt: Schema.Attribute.DateTime;
+    telefone: Schema.Attribute.String;
     total: Schema.Attribute.Decimal &
       Schema.Attribute.SetMinMax<
         {
